@@ -1,0 +1,50 @@
+#!/bin/bash
+if [[ "${UID}" -ne 0 ]]
+then
+        echo 'You have to be root to perform this script ! ' >&2
+        exit 1
+fi
+
+#2.
+usage() {
+echo "USAGE : ${0} [-d] [-r] [-a]" >&2
+echo "-d -- delete a user"
+echo "-r -- remove the home dir of this user"
+echo "-a -- create an archive of the home dir of this this user "
+exit 1
+}
+USER="${2}"
+while getopts dra OPTION
+do
+case ${OPTION} in
+        d)
+
+        userdel  ${USER}
+        if [[ ${?} -ne 0 ]]
+        then
+                echo "User ${USER}  is not deleted !">&2
+        else
+                echo "User ${USER} is succesfully deleted !"
+        exit 1
+        fi
+;;
+        r)
+rm -df ${USER}
+if [[ ${?} -ne 0 ]]
+then
+        echo 'User home dir  is not deleted !'>&2
+        exit 1
+fi
+;;
+        a)
+HOME_DIR=$( readlink USER )
+tar -cf ${HOME_DIR}.tar ${HOME_DIR}
+if [[ ${?} -ne 0 ]]
+then
+        echo 'User home dir  is not archived !'>&2
+        exit 1
+fi
+;;
+esac
+done
+usage
