@@ -1,0 +1,51 @@
+#!/bin/bash
+#This func sent a message to sys log and stdout if verbose is true
+log() {
+        local MESSAGE="${@}"
+        if [[ "${VERBOSE}" = 'true' ]]
+         then
+                echo "${MESSAGE}"
+        fi
+                logger -t functions.sh "${MESSAGE}"
+        }
+		
+        backup_file(){
+        #This func backs upo the file
+local FILE="${1}"
+#make sure that the file exists
+if [[ -f "${FILE}" ]]
+then
+#Files in var folder survive a reboot
+        local BACKUP_FILE="/var/tmp/$(basename ${FLIE}).$(date +%F-%N)"
+        log "Backing UP ${FILE} to ${BACKUP_FILE}"
+
+#The exit status of  the funciton wil be the exit status of cp command
+        cp -p ${FILE} ${BACKUP_FILE}
+else
+#The file does not exit , so return a non zero exit status
+        return 1
+fi
+}
+        readonly VERBOSE='true'
+        log  'Hello !'
+        log  'This is fun'
+
+
+
+#Put all the funcitons in the top of the script
+#Do not call a function before it is defined
+
+
+#back up a script before modify it
+
+backup_file '/etc/passwd'
+
+#Make  a decision
+if [[ "${?}" -eq '0' ]]
+then
+        log 'File backed up'
+else
+        log 'File back up failed'
+        exit 1
+fi
+
