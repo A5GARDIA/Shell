@@ -1,6 +1,5 @@
 #!/bin/bash
- 
- 
+
 #Create an account on the local system
 #Prompt to enter details
 
@@ -19,7 +18,7 @@ read -p 'Enter the password : ' PASSWORD
 
 useradd -c "${COMMENT}" -m "${USER_NAME}"    # -m  to create home dir
 
-#.5 Set tthe password
+#.5 Set the password
 
 echo ${PASSWORD} | passwd --stdin  ${USER_NAME} # --stdin used to use as input the output of first part
 
