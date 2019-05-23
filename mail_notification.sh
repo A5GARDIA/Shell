@@ -11,3 +11,14 @@ HOSTNAME=$(hostname)
 else
         echo " ${HOSTNAME}  USED : ${USED_MEM} of RAM memory" | mail  -s "HOST INFO" email@gmail.com
 fi
+
+
+
+
+
+
+
+
+%%%%%%%%%%
+
+Konfiguroni mailx per te perdour mail notification
